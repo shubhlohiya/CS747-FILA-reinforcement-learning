@@ -29,13 +29,17 @@ for i in range(1,n):
         i+=1
         horizon = sys.argv[i]
 
+with open(instance_path) as f:
+    arms = [line.strip() for line in f]
+    arms = list(map(float, arm))
+
 if algorithm == "epsilon-greedy":
-    epsilon_greedy()
+    epsilon_greedy(arms, randomSeed, horizon, epsilon)
 elif algorithm == "ucb":
-    ucb()
+    ucb(arms, randomSeed, horizon, epsilon)
 elif algorithm == "kl-ucb":
-    kl_ucb()
+    kl_ucb(arms, randomSeed, horizon, epsilon)
 elif algorithm == "thompson-sampling":
-    thompson_sampling()
+    thompson_sampling(arms, randomSeed, horizon, epsilon)
 elif algorithm == "thompson-sampling-with-hint":
-    thompson_sampling_with_hint()
+    thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon)
