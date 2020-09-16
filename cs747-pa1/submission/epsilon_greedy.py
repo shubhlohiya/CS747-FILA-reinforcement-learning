@@ -14,32 +14,26 @@ def epsilon_greedy(arms, randomSeed, horizon, epsilon):
     values = np.array([0 for i in range(n)])
     count = np.array([0 for i in range(n)])
 
-    for t in range(n):
-        if t==horizon:
-            break
-        r = np.random.binomial(p=arms[t])
-        count[t] += 1
-        values[t] += r
-        REW+=r
+    # for t in range(n):
+    #     if t==horizon:
+    #         break
+    #     r = np.random.binomial(1, arms[t])
+    #     count[t] += 1
+    #     values[t] += r
+    #     REW+=r
 
-    T = horizon-np.sum(count)
+    T = horizon#-np.sum(count)
     for t in range(T):
         if np.random.random() < epsilon:
             arm = np.random.randint(0, n)
         else:
-            arm = np.random.choice(np.where(values==values.max()))
+            arm = np.random.choice(np.where(values==values.max())[0])
 
-        r = np.random.binomial(p=arms[arm])
+        r = np.random.binomial(1, arms[arm])
         count[arm] += 1
         values[arm] += (r - values[arm]) / count[arm]
         REW+=r
 
     result = "epsilon-greedy, " + str(randomSeed)+ ", " + str(epsilon) + ", "\
-             + str(horizon) + ", " + str(horizon*arms.max()-REW)
-
-
-
-
-
-
-
+             + str(horizon) + ", " + str(horizon*max(arms)-REW)
+    return result
