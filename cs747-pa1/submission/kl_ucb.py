@@ -3,21 +3,21 @@ import numpy as np
 def KL(p, q):
     if p==q:
         return 0
-    if q==1:
+    if q==0 or q==1:
         return float("inf")
+    if p==1:
+        return np.log(1/q)
     if p==0:
         return -np.log(1-q)
     return p*np.log(p/q)+(1-p)*np.log((1-p)/(1-q))
 
 def get_kl_ucb(value, count, t, c=3):
-    if value==1:
-        return 1
-    delta = 0.01
-    target = np.log(t) + c*np.log(np.log(t))
+    delta = 0.005
+    target = (np.log(t) + c*np.log(np.log(t)))/count
     low, high = value, 1
     mid = (low+high)/2
-    res = count * KL(value, mid)
-    while abs(res-target)>delta:
+    res = KL(value, mid)
+    while abs(res-target)>delta and mid-low>delta:
         if res>target:
             high = mid
         else:
