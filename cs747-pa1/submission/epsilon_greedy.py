@@ -3,7 +3,7 @@ import numpy as np
 def epsilon_greedy(arms, randomSeed, horizon, epsilon):
     """
     :param arms: The actual means of the bandit arms
-    :param randomSeed: The random seem to generate pseudo random results
+    :param randomSeed: The random seed to generate pseudo random results
     :param horizon: The number of pulls the bandit should make
     :param epsilon: The exploration parameter
     :return: String of form "algorithm, random seed, epsilon, horizon, REG"
