@@ -7,7 +7,7 @@ from epsilon_greedy import epsilon_greedy
 
 n = len(sys.argv)
 
-instance_path, algorithm, randomSeed, epsilon, horizon = "", "", 0, 0, 200
+instance_path, algorithm, randomSeed, epsilon, horizon = "../instances/i-2.txt", "epsilon-greedy", 0, 0.333, 200
 
 for i in range(1,n):
     if sys.argv[i]== "--instance":

@@ -11,7 +11,7 @@ def epsilon_greedy(arms, randomSeed, horizon, epsilon):
     np.random.seed(randomSeed)
     n = len(arms) # number of arms
     REW = r = 0
-    values = np.array([0 for i in range(n)])
+    values = np.array([0.0 for i in range(n)])
     count = np.array([0 for i in range(n)])
 
     # for t in range(n):
