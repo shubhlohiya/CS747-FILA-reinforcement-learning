@@ -15,16 +15,17 @@ def get_kl_ucb(value, count, t, c=3):
     delta = 0.005
     target = (np.log(t) + c*np.log(np.log(t)))/count
     low, high = value, 1
-    mid = (low+high)/2
-    res = KL(value, mid)
-    while abs(res-target)>delta and mid-low>delta:
-        if res>target:
+
+    while high-low>=delta:
+        mid = (low + high) / 2
+        res = KL(value, mid)
+        if target>res and target-res<=delta:
+            return mid
+        elif res > target:
             high = mid
         else:
             low = mid
-        mid = (low + high) / 2
-        res = KL(value, mid)
-    return round(mid, 3)
+    return low
 
 def kl_ucb(arms, randomSeed, horizon, epsilon=0):
     """
@@ -41,20 +42,16 @@ def kl_ucb(arms, randomSeed, horizon, epsilon=0):
     count = np.array([0 for i in range(n)])
 
     for t in range(n):
-        if t==horizon:
-            break
         r = np.random.binomial(1, arms[t])
         count[t] += 1
         values[t] += r
         REW+=r
 
-    done = np.sum(count)
     kl_ucbs = np.empty(n)
-    for t in range(done, horizon):
+    for t in range(n, horizon):
         for i in range(n):
             kl_ucbs[i] = get_kl_ucb(values[i], count[i], t)
-
-        arm = np.random.choice(np.where(kl_ucbs==kl_ucbs.max())[0])
+        arm = np.argmax(kl_ucbs)
         r = np.random.binomial(1, arms[arm])
         count[arm] += 1
         values[arm] += (r - values[arm]) / count[arm]
