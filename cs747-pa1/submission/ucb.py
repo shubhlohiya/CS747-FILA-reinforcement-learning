@@ -1,6 +1,6 @@
 import numpy as np
 
-def ucb(arms, randomSeed, horizon, epsilon):
+def ucb(arms, randomSeed, horizon, epsilon=0):
     """
     :param arms: The actual means of the bandit arms
     :param randomSeed: The random seed to generate pseudo random results
@@ -23,12 +23,12 @@ def ucb(arms, randomSeed, horizon, epsilon):
         REW+=r
 
     done = np.sum(count)
-    ucb = np.empty(n)
+    ucbs = np.empty(n)
     for t in range(done, horizon):
         for i in range(n):
-            ucb[i] = values[i] + np.sqrt(2 * np.log(t)/count[i])
+            ucbs[i] = values[i] + np.sqrt(2 * np.log(t)/count[i])
 
-        arm = np.random.choice(np.where(ucb==ucb.max())[0])
+        arm = np.random.choice(np.where(ucbs==ucbs.max())[0])
         r = np.random.binomial(1, arms[arm])
         count[arm] += 1
         values[arm] += (r - values[arm]) / count[arm]
