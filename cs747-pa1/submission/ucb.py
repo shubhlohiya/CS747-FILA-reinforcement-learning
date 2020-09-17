@@ -15,16 +15,13 @@ def ucb(arms, randomSeed, horizon, epsilon=0):
     count = np.array([0 for i in range(n)])
 
     for t in range(n):
-        if t==horizon:
-            break
         r = np.random.binomial(1, arms[t])
         count[t] += 1
         values[t] += r
         REW+=r
 
-    done = np.sum(count)
     ucbs = np.empty(n)
-    for t in range(done, horizon):
+    for t in range(n, horizon):
         for i in range(n):
             ucbs[i] = values[i] + np.sqrt(2 * np.log(t)/count[i])
 
