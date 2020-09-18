@@ -36,14 +36,14 @@ with open(instance_path) as f:
 result = instance_path + ", "
 
 if algorithm == "epsilon-greedy":
-    result += epsilon_greedy(arms, randomSeed, horizon, epsilon)
+    result += epsilon_greedy(arms, randomSeed, horizon, epsilon) + "\n"
 elif algorithm == "ucb":
-    result += ucb(arms, randomSeed, horizon, epsilon)
+    result += ucb(arms, randomSeed, horizon, epsilon) + "\n"
 elif algorithm == "kl-ucb":
-    result += kl_ucb(arms, randomSeed, horizon, epsilon)
+    result += kl_ucb(arms, randomSeed, horizon, epsilon) + "\n"
 elif algorithm == "thompson-sampling":
-    result += thompson_sampling(arms, randomSeed, horizon, epsilon)
+    result += thompson_sampling(arms, randomSeed, horizon, epsilon) + "\n"
 elif algorithm == "thompson-sampling-with-hint":
-    result += thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint=max(arms))
+    result += thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint=max(arms)) + "\n"
 
 print(result)
