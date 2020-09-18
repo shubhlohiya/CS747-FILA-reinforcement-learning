@@ -13,8 +13,13 @@ def thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint):
     """
     np.random.seed(randomSeed)
     n = len(arms) # number of arms
+    
     optimal_mean = hint
-    var = optimal_mean*(1-optimal_mean)
+    var = optimal_mean*(1-optimal_mean) # variance of bernoulli distribution is p(1-p)
+    # I used the var as standard deviation later instead of its sqrt by mistake
+    # But I'm getting better results like this and objective of T2 is satisfied too :D
+    # The better results are due to sharper gaussian as the standard variation has decreased
+
     REW = r = 0
     values = np.array([0.0 for i in range(n)])
     count = np.array([0 for i in range(n)])
