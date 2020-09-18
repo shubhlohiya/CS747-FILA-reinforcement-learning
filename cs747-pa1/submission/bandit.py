@@ -3,7 +3,7 @@ from epsilon_greedy import epsilon_greedy
 from ucb import ucb
 from kl_ucb import kl_ucb
 from thompson_sampling import thompson_sampling
-# from thompson_sampling_with_hint import thompson_sampling_with_hint
+from thompson_sampling_with_hint import thompson_sampling_with_hint
 
 n = len(sys.argv)
 
