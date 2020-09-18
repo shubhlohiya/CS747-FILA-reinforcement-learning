@@ -1,6 +1,9 @@
 import numpy as np
 
-def thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon):
+def gaussian(x, mu, sig):
+    return 1./(np.sqrt(2.*np.pi)*sig)*np.exp(-np.power((x - mu)/sig, 2.)/2)
+
+def thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint):
     """
     :param arms: The actual means of the bandit arms
     :param randomSeed: The random seed to generate pseudo random results
@@ -10,20 +13,23 @@ def thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon):
     """
     np.random.seed(randomSeed)
     n = len(arms) # number of arms
-    bestval = np.max(arms)
+    optimal_mean = hint
+    var = optimal_mean*(1-optimal_mean)
     REW = r = 0
     values = np.array([0.0 for i in range(n)])
     count = np.array([0 for i in range(n)])
 
-    for t in range(horizon):
+    for t in range(n):
+        r = np.random.binomial(1, arms[t])
+        count[t] += 1
+        values[t] += r
+        REW+=r
+
+    for t in range(n, horizon):
         arm = 0
         max_sampled = -1
         for i in range(n):
-            s1 = values[i]*count[i]
-            f1 = count[i]-s1
-            s2 = count[i]*values[i]+1
-            f2 = count[i]*bestval+1
-            sampled = np.random.beta(s1+1, f1+1)*np.random.beta(s2, f2)
+            sampled = gaussian(values[i], optimal_mean, var/np.sqrt(count[i]))
             if(sampled>max_sampled):
                 arm = i
                 max_sampled = sampled

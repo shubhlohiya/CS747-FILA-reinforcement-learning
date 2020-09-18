@@ -44,6 +44,6 @@ elif algorithm == "kl-ucb":
 elif algorithm == "thompson-sampling":
     result += thompson_sampling(arms, randomSeed, horizon, epsilon)
 elif algorithm == "thompson-sampling-with-hint":
-    result += thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon)
+    result += thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint=max(arms))
 
 print(result)
