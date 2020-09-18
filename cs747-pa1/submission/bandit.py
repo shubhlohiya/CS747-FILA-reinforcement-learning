@@ -7,9 +7,10 @@ from thompson_sampling_with_hint import thompson_sampling_with_hint
 
 n = len(sys.argv)
 
-instance_path, algorithm, randomSeed, epsilon, horizon = "../instances/i-2.txt", "kl-ucb", 0, 0.333, 200
+# default values to the bandit - random
+instance_path, algorithm, randomSeed, epsilon, horizon = "../instances/i-2.txt", "epsilon-greedy", 0, 0.333, 200
 
-for i in range(1,n):
+for i in range(1,n): # take command line arguments
     if sys.argv[i]== "--instance":
         i+=1
         instance_path = sys.argv[i]
@@ -29,12 +30,13 @@ for i in range(1,n):
         i+=1
         horizon = int(sys.argv[i])
 
-with open(instance_path) as f:
+with open(instance_path) as f: # read true means of the bandit instance
     arms = [line.strip() for line in f]
     arms = list(map(float, arms))
 
 result = instance_path + ", "
 
+# call the appropriate function based on command line arguments
 if algorithm == "epsilon-greedy":
     result += epsilon_greedy(arms, randomSeed, horizon, epsilon) + "\n"
 elif algorithm == "ucb":
@@ -46,4 +48,4 @@ elif algorithm == "thompson-sampling":
 elif algorithm == "thompson-sampling-with-hint":
     result += thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint=max(arms)) + "\n"
 
-print(result)
+print(result) # print result in the right format
