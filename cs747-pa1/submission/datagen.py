@@ -172,18 +172,68 @@ def thompson_sampling(arms, randomSeed, horizon, epsilon, pauses, instance, file
             + str(horizon) + ", " + str(horizon * max(arms) - REW))
     pass
 
+def gaussian(x, mu, sig):
+    return 1./(np.sqrt(2.*np.pi)*sig)*np.exp(-np.power((x - mu)/sig, 2.)/2)
+
+def thompson_sampling_with_hint(arms, randomSeed, horizon, epsilon, hint, pauses, instance, file):
+    """
+    :param arms: The actual means of the bandit arms
+    :param randomSeed: The random seed to generate pseudo random results
+    :param horizon: The number of pulls the bandit should make
+    :param epsilon: Dummy Parameter
+    :return: String of form "algorithm, random seed, epsilon, horizon, REG"
+    """
+    np.random.seed(randomSeed)
+    n = len(arms) # number of arms
+    optimal_mean = hint
+    var = optimal_mean*(1-optimal_mean)
+    REW = r = 0
+    values = np.array([0.0 for i in range(n)])
+    count = np.array([0 for i in range(n)])
+
+    for t in range(n):
+        r = np.random.binomial(1, arms[t])
+        count[t] += 1
+        values[t] += r
+        REW+=r
+
+    for t in range(n, horizon):
+        if t in pauses:
+            file.write("\n" + instance+", "+"thompson-sampling-with-hint, " + str(randomSeed)+ ", " + str(epsilon) + ", "\
+             + str(t) + ", " + str(t*max(arms)-REW))
+        arm = 0
+        max_sampled = -1
+        for i in range(n):
+            sampled = gaussian(values[i], optimal_mean, var/np.sqrt(count[i]))
+            if(sampled>max_sampled):
+                arm = i
+                max_sampled = sampled
+
+        r = np.random.binomial(1, arms[arm])
+        count[arm] += 1
+        values[arm] += (r - values[arm]) / count[arm]
+        REW+=r
+
+    file.write("\n" + instance + ", " + "thompson-sampling-with-hint, " + str(randomSeed) + ", " + str(epsilon) + ", " \
+            + str(horizon) + ", " + str(horizon * max(arms) - REW))
+    pass
+
 instances = [f"../instances/i-{k}.txt" for k in range(1,4)]
 seeds = range(50)
 algorithms = [epsilon_greedy, ucb, kl_ucb, thompson_sampling]
 epsilon = 0.02
 horizons = [100, 400, 1600, 6400, 25600]
 
-instance = instances[2]   
-with open(instance) as f:
-    arms = [line.strip() for line in f]
-    arms = list(map(float, arms))
+for instance in instances: 
+    with open(instance) as f:
+        arms = [line.strip() for line in f]
+        arms = list(map(float, arms))
 
-with open("outputDataT1.txt", "a") as f:
-    for algo in algorithms:
+    with open("outputDataT1.txt", "a") as f:
+        for algo in algorithms:
+            for seed in seeds:
+                algo(arms, seed, 102400, epsilon, horizons, instance, f)
+
+    with open("outputDataT2.txt", "a") as f: # used thompson-sampling data from outputDataT1.txt
         for seed in seeds:
-            algo(arms, seed, 102400, epsilon, horizons, instance, f)
+            thompson_sampling_with_hint(arms, seed, 102400, epsilon, max(arms), horizons, instance, f)
