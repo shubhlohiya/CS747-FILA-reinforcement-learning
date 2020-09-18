@@ -18,7 +18,9 @@ for instance in instances:
         temp=data[(data.instance==instance) & (data.algorithm==algo)]
         x = list(temp.horizon)
         y = list(temp.regret)
-        plt.plot(x,y, label=algo)        
+        plt.plot(x,y, label=algo)
+    plt.xlabel("Time Steps (Logarithmic Scale)", fontsize=12)
+    plt.ylabel("Cumulative Regret", fontsize=12)        
     plt.title("Instance " + str(instance[-5])+"\n", fontsize=20)
     plt.legend()
     plt.savefig("plots/T2_instance_" + str(instance[-5])+".png")
