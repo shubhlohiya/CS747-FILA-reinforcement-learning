@@ -36,7 +36,7 @@ class MazeVerifyOutput:
             
             mistakeFlag = self.traversePath(shortestPath,in_file)
             if not mistakeFlag:
-                print("ALL CHECKS PASSED! \nChecking the correctness of you solution...")
+                print("ALL CHECKS PASSED! \nChecking the correctness of your solution...")
                 self.verifyOutput(shortestPath,in_file)
                 
             
