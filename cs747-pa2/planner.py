@@ -1,45 +1,47 @@
-import argparse, pulp as p, numpy as np
+import argparse, pulp as p, numpy as np#, time
 parser = argparse.ArgumentParser()
 
 class Solve():
     def __init__(self, path, algo):
         self.path = path
         mdp = self.get_mdp()
+        # start = time.time()
         if algo == "vi":
             V, pi = self.vi_solve(mdp)
         elif algo == "hpi":
             V, pi = self.hpi_solve(mdp)
         elif algo == "lp":
             V, pi = self.lp_solve(mdp)
+        # end = time.time()
+        # print("Elapsed time: ", end - start)
         self.output(V, pi)
 
     def get_mdp(self):
         mdp = dict()
-        with open(self.path) as f:
-            data = f.read().strip().split("\n")
-            for line in data:
-                flag, *content = line.split()
-                if flag == "transition":
-                    s, a, s_next, r, p = map(eval, content)
-                    # R.setdefault(s, {}).setdefault(a, {})[s_next] = r
-                    # T.setdefault(s, {}).setdefault(a, {})[s_next] = p
-                    mdp["R"][s, a, s_next], mdp["T"][s, a, s_next] = r, p
-                elif flag == "numStates":
-                    mdp["ns"] = int(content[-1])
-                elif flag == "numActions":
-                    mdp["na"] = int(content[-1])
-                    # T = dict()
-                    # R = dict()
-                    mdp["T"] = np.zeros((mdp["ns"], mdp["na"], mdp["ns"]))
-                    mdp["R"] = np.zeros((mdp["ns"], mdp["na"], mdp["ns"]))
-                elif flag == "start":
-                    mdp["start"] = int(content[-1])
-                elif flag == "end":
-                    mdp["end"] = list(map(int, content))
-                elif flag == "mdptype":
-                    mdp["mdptype"] = content[-1]
-                elif flag == "discount":
-                    mdp["gamma"] = float(content[-1])
+        data = open(self.path).read().strip().split("\n")
+        for line in data:
+            flag, *content = line.split()
+            if flag == "transition":
+                s, a, s_next, r, p = map(eval, content)
+                # R.setdefault(s, {}).setdefault(a, {})[s_next] = r
+                # T.setdefault(s, {}).setdefault(a, {})[s_next] = p
+                mdp["R"][s, a, s_next], mdp["T"][s, a, s_next] = r, p
+            elif flag == "numStates":
+                mdp["ns"] = int(content[-1])
+            elif flag == "numActions":
+                mdp["na"] = int(content[-1])
+                # T = dict()
+                # R = dict()
+                mdp["T"] = np.zeros((mdp["ns"], mdp["na"], mdp["ns"]))
+                mdp["R"] = np.zeros((mdp["ns"], mdp["na"], mdp["ns"]))
+            elif flag == "start":
+                mdp["start"] = int(content[-1])
+            elif flag == "end":
+                mdp["end"] = list(map(int, content))
+            elif flag == "mdptype":
+                mdp["mdptype"] = content[-1]
+            elif flag == "discount":
+                mdp["gamma"] = float(content[-1])
         return mdp
 
     def vi_solve(self, mdp):
