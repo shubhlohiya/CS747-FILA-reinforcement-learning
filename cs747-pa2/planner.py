@@ -1,16 +1,14 @@
-import argparse,sys
-import pulp as p
+import argparse, pulp as p, numpy as np
 parser = argparse.ArgumentParser()
-import numpy as np
 
 class Solve():
     def __init__(self, path, algo):
         self.path = path
         mdp = self.get_mdp()
         if algo == "vi":
-            pass
+            V, pi = self.vi_solve(mdp)
         elif algo == "hpi":
-            pass
+            V, pi = self.hpi_solve(mdp)
         elif algo == "lp":
             V, pi = self.lp_solve(mdp)
         self.output(V, pi)
@@ -44,6 +42,31 @@ class Solve():
                     mdp["gamma"] = float(content[-1])
         return mdp
 
+    def vi_solve(self, mdp):
+        V = np.zeros(mdp["ns"])
+        V_old = V
+        while (1):
+            V = np.max(np.sum(mdp["T"] * (mdp["R"] + mdp["gamma"] * V_old), axis=-1), axis=-1)
+            if np.allclose(V, V_old, rtol=0, atol=1e-11):
+                break
+            V_old = V
+        policy = np.argmax(np.sum(mdp["T"] * (mdp["R"] + mdp["gamma"] * V), axis=-1), axis=-1)
+        return V, policy
+
+    def hpi_solve(self, mdp):
+        pi = np.random.randint(low=0, high=mdp["na"], size=mdp["ns"])
+        pi_old = pi
+        while (1):
+            T_pi = mdp["T"][np.arange(mdp["ns"]), pi_old]
+            R_pi = mdp["R"][np.arange(mdp["ns"]), pi_old]
+            V = np.squeeze(np.linalg.inv(np.eye(mdp["ns"]) - mdp["gamma"] * T_pi)
+                           @ np.sum(T_pi * R_pi, axis=-1, keepdims=True))
+            pi = np.argmax(np.sum(mdp["T"] * (mdp["R"] + mdp["gamma"] * V), axis=-1), axis=-1)
+            if np.array_equal(pi, pi_old):
+                break
+            pi_old = pi
+        return V, pi
+
     def lp_solve(self, mdp):
         prob = p.LpProblem('MDP', p.LpMinimize)
         V = np.array(list(p.LpVariable.dicts("V", [i for i in range(mdp["ns"])]).values()))
@@ -65,8 +88,6 @@ class Solve():
         for i in range(len(V)):
             output += V[i] + " " + pi[i] + "\n"
         print(output.strip())
-
-
 
 
 if __name__ == "__main__":
