@@ -46,7 +46,6 @@ def get_transitions(i, j, maze, state_names):
     s = []
     s_values = []
     a_values = []
-    r = []
     if maze[i-1, j]!=1:
         s.append(state_names[i-1, j])
         s_values.append(maze[i-1, j])
@@ -65,13 +64,7 @@ def get_transitions(i, j, maze, state_names):
         a_values.append(3)
     transitions = ""
     for t in range(len(s)):
-        if s_values[t]==0:
-            r.append(-1.0)
-        elif s_values[t]==2:
-            r.append(-10.0)
-        elif s_values[t]==3:
-            r.append(100.0)
-        transitions += f"transition {state_names[i,j]} {a_values[t]} {s[t]} {r[t]} 1.0\n"
+        transitions += f"transition {state_names[i,j]} {a_values[t]} {s[t]} -1.0 1.0\n"
     return transitions
 
 if __name__ == "__main__":
