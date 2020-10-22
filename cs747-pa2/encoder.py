@@ -44,26 +44,39 @@ def encode(path):
 
 def get_transitions(i, j, maze, state_names):
     s = []
-    s_values = []
     a_values = []
+
+    # North
+    a_values.append(0)
     if maze[i-1, j]!=1:
         s.append(state_names[i-1, j])
-        s_values.append(maze[i-1, j])
-        a_values.append(0)
+    else:
+        s.append(state_names[i, j])
+
+    # South
+    a_values.append(1)
     if maze[i+1, j]!=1:
         s.append(state_names[i+1, j])
-        s_values.append(maze[i+1, j])
-        a_values.append(1)
+    else:
+        s.append(state_names[i, j])
+
+    # East
+    a_values.append(2)
     if maze[i, j+1]!=1:
         s.append(state_names[i, j+1])
-        s_values.append(maze[i, j+1])
-        a_values.append(2)
+        # s_values.append(maze[i, j+1])
+    else:
+        s.append(state_names[i, j])
+
+    # West
+    a_values.append(3)
     if maze[i, j-1]!=1:
         s.append(state_names[i, j-1])
-        s_values.append(maze[i, j-1])
-        a_values.append(3)
+    else:
+        s.append(state_names[i, j])
+
     transitions = ""
-    for t in range(len(s)):
+    for t in range(4):
         transitions += f"transition {state_names[i,j]} {a_values[t]} {s[t]} -1.0 1.0\n"
     return transitions
 
