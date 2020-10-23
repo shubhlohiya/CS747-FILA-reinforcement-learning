@@ -93,8 +93,8 @@ class Solve():
 
 
 if __name__ == "__main__":
-    parser.add_argument("--mdp", type=str, default="./data/mdp/continuing-mdp-2-2.txt")
-    parser.add_argument("--algorithm", type=str, default="hpi")
+    parser.add_argument("--mdp", type=str, default="./data/mdp/continuing-mdp-50-20.txt")
+    parser.add_argument("--algorithm", type=str, default="vi")
     args = parser.parse_args()
 
     Solve(args.mdp, args.algorithm)
