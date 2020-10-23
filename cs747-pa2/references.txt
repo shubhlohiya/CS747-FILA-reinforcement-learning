@@ -1,0 +1,3 @@
+Stackoverflow [For syntax related queries]
+Numpy, Pulp documentation
+Lecture Slides [For reference and report]
