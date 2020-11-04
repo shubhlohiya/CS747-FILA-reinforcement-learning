@@ -39,7 +39,8 @@ class WindyGridworld:
 class Solve:
     def __init__(self, algorithm="sarsa", kings_moves=False):
         self.grid = WindyGridworld(kings_moves)
-        self.q_val = np.zeros(self.grid.h, self.grid.w, len(self.grid.actions))
+        self.q_val = np.zeros((self.grid.h, self.grid.w, len(self.grid.actions)))
+        self.res = self.play(algorithm)
 
     def sarsa_episode(self):
         time_steps = 0
@@ -101,8 +102,27 @@ class Solve:
             time_steps += 1
         return time_steps
 
+    def play(self, algorithm):
+        episodes = 200
 
+        if algorithm == "sarsa":
+            f = self.sarsa_episode
+        elif algorithm == "q-learning":
+            f = self.q_learning_episode
+        elif algorithm == "expected-sarsa":
+            f = self.expected_sarsa_episode
+        steps = []
+        for i in range(episodes):
+            steps.append(f())
 
+        return (np.cumsum(steps), np.arange(1, episodes+1))
 
 if __name__ == "__main__":
-    Solve()
+    np.random.seed(0)
+    plt.plot(*Solve(algorithm="sarsa").res, label="Sarsa")
+    plt.plot(*Solve(algorithm="q-learning").res, label="Q-Learning")
+    plt.plot(*Solve(algorithm="expected-sarsa").res, label="Expected Sarsa")
+    plt.xlabel("Time Steps")
+    plt.ylabel("Episodes")
+    plt.legend()
+    plt.show()
