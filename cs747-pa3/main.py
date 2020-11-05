@@ -4,7 +4,6 @@ from agent import Solve
 parser = argparse.ArgumentParser()
 
 def run(algorithm, kings_moves = False, stochastic=False):
-    np.random.seed(0)
     data = []
     for i in range(10):
         np.random.seed(i)
@@ -25,6 +24,7 @@ if __name__ == "__main__":
         plt.title("Task 2: Windy Gridworld Agent with 4 moves - Sarsa(0)\n")
         plt.xlabel("Time Steps")
         plt.ylabel("Episodes")
+        plt.grid()
         plt.savefig("plots/task2.png")
         plt.show()
 
@@ -33,6 +33,7 @@ if __name__ == "__main__":
         plt.title("Task 3: Windy Gridworld Agent with King's moves - Sarsa(0)\n")
         plt.xlabel("Time Steps")
         plt.ylabel("Episodes")
+        plt.grid()
         plt.savefig("plots/task3.png")
         plt.show()
 
@@ -41,6 +42,7 @@ if __name__ == "__main__":
         plt.title("Task 4: Windy Gridworld Agent with King's moves and stochastic wind - Sarsa(0)\n")
         plt.xlabel("Time Steps")
         plt.ylabel("Episodes")
+        plt.grid()
         plt.savefig("plots/task4.png")
         plt.show()
 
@@ -52,5 +54,6 @@ if __name__ == "__main__":
         plt.xlabel("Time Steps")
         plt.ylabel("Episodes")
         plt.legend()
+        plt.grid()
         plt.savefig("plots/task5.png")
         plt.show()
