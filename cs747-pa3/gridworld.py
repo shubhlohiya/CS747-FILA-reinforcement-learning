@@ -11,7 +11,6 @@ class WindyGridworld:
 
         self.start = (3, 0)
         self.end = (3, 7)
-
         self.wind = [0, 0, 0, 1, 1, 1, 2, 2, 1, 0]
 
         self.epsilon = 0.1
