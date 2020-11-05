@@ -20,18 +20,18 @@ class WindyGridworld:
         # define moves
         self.F = []
         if stochastic:
-            d = lambda: np.random.choice([-1, 0, 1])
-            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(), 0), self.h - 1), j))  # N
-            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(), self.h - 1), 0), j))  # S
-            self.F.append(lambda i, j: (min(max(i - self.wind[j] + d(), 0), self.h - 1), min(j + 1, self.w - 1)))  # E
-            self.F.append(lambda i, j: (min(max(i - self.wind[j] + d(), 0), self.h - 1), max(j - 1, 0)))  # W
-            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(), 0), self.h - 1),
+            d = lambda k: bool(self.wind[k])*np.random.choice([-1, 0, 1])
+            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(j), 0), self.h - 1), j))  # N
+            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(j), self.h - 1), 0), j))  # S
+            self.F.append(lambda i, j: (min(max(i - self.wind[j] + d(j), 0), self.h - 1), min(j + 1, self.w - 1)))  # E
+            self.F.append(lambda i, j: (min(max(i - self.wind[j] + d(j), 0), self.h - 1), max(j - 1, 0)))  # W
+            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(j), 0), self.h - 1),
                                         min(j + 1, self.w - 1)))  # NE
-            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(), self.h - 1), 0),
+            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(j), self.h - 1), 0),
                                         min(j + 1, self.w - 1)))  # SE
-            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(), self.h - 1), 0),
+            self.F.append(lambda i, j: (max(min(i + 1 - self.wind[j] + d(j), self.h - 1), 0),
                                         max(j - 1, 0)))  # SW
-            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(), 0), self.h - 1),
+            self.F.append(lambda i, j: (min(max(i - 1 - self.wind[j] + d(j), 0), self.h - 1),
                                         max(j - 1, 0)))  # NW
         else:
             self.F.append(lambda i, j: (max(i - 1 - self.wind[j], 0), j))  # N
