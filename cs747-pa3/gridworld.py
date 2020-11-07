@@ -3,7 +3,6 @@ class WindyGridworld:
     def __init__(self, kings_moves, stochastic):
         # Gridworld parameters
         self.h, self.w = 7, 10
-        self.kings_moves = kings_moves
         if not kings_moves:
             self.actions = list(range(4))  # 0-N, 1-S, 2-E, 3-W
         else:
