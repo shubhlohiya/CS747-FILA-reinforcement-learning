@@ -1,13 +1,13 @@
 import argparse, numpy as np
 import matplotlib.pyplot as plt
-from agent import Solve
+from agent import Agent
 parser = argparse.ArgumentParser()
 
 def run(algorithm, kings_moves = False, stochastic=False):
     data = []
     for i in range(10):
         np.random.seed(i)
-        data.append(Solve(algorithm=algorithm, kings_moves=kings_moves, stochastic=stochastic).res)
+        data.append(Agent(algorithm=algorithm, kings_moves=kings_moves, stochastic=stochastic).res)
 
     data = np.array(data)
     data = np.mean(data, axis=0)

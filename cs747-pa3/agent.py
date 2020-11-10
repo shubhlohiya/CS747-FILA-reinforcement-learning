@@ -1,7 +1,7 @@
 import numpy as np
 from gridworld import WindyGridworld
 
-class Solve:
+class Agent:
     def __init__(self, algorithm="sarsa", kings_moves=False, stochastic=False):
         self.grid = WindyGridworld(kings_moves, stochastic)
         self.q_val = np.zeros((self.grid.h, self.grid.w, len(self.grid.actions)))
