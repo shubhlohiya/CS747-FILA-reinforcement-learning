@@ -43,11 +43,13 @@ python main.py -a compare -s 1 -k 0 # compares all 3 algos under given condition
 ```
 Either of these will run the agent for 200 episodes and generate the plot of episodes vs cumulative time-steps.  
 
-***Note: EITHER -t, OR -a, -s and -k flags need to be passed. No other combinations are allowed.***
+***Note 1: EITHER -t, OR -a, -s and -k flags need to be passed. No other combinations are allowed.***  
+***Note 2: If the code is being run on a cs747 docker container, plt.show() won't show the plot. Plots can be found in the plots directory then.***
 
 Hyper Parameters Used: 
 ```python
 alpha = 0.5 # learning rate
 epsilon = 0.1 # for epsilon-greedy choice
 gamma = 1 # no discounting 
+reward = -1 # on every time step. To incentivise for faster convergences
 ```
