@@ -1,7 +1,5 @@
 # CS747 - Foundations of Intelligent and Learning Agents 
 
-## Programming Assignments
-
 This repository contains my work for the Programming Assignments of [CS747](https://www.cse.iitb.ac.in/~shivaram/teaching/cs747-a2020/ "Foundations of Intelligent and Learning Agents") [Autumn 2020-21 offering]
 
 ## Assignments
