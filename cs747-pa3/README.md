@@ -1,4 +1,4 @@
-## CS 747 Programming Assignment 3: Windy Gridworld Problem
+## Programming Assignment 3: Windy GridWorld
 
 This is an implementation of Example 6.5, Exercise 6.9 and Exercise 6.10 from the book [Reinforcement Learning: An Introduction by Andrew Barto and Richard S. Sutton](https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf "Reinforcement Learning: An Introduction"). This work also compares the performance of Sarsa, Q-Learning and Expected Sarsa with Full Bootstrapping.  
 
